@@ -2,7 +2,6 @@ package issue
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	"os"
 	"time"
@@ -24,13 +23,18 @@ type CreatedIssue struct {
 }
 
 type Memory struct {
-	Store map[string]CreatedIssue
+	FilePath string
 }
 
-func NewMemory() *Memory {
-	return &Memory{
-		Store: make(map[string]CreatedIssue),
+func NewMemory(filePath ...string) *Memory {
+	m := &Memory{
+		FilePath: "issue/issue.json",
 	}
+
+	if len(filePath) > 0 {
+		m.FilePath = filePath[0]
+	}
+	return m
 }
 
 func (m *Memory) Create(issueTitle, issueText string) (CreatedIssue, error) {
@@ -48,13 +52,13 @@ func (m *Memory) Create(issueTitle, issueText string) (CreatedIssue, error) {
 }
 
 // Save saves created issue to the generated id
-func (m *Memory) Save(issue CreatedIssue) error {
+func (m *Memory) Save(issue CreatedIssue, filePath string) error {
 	i := []CreatedIssue{}
 
 	i = append(i, issue)
 	data := m.JSON(i)
 
-	err := os.WriteFile("issue/issue.json", []byte(data), 0644)
+	err := os.WriteFile(filePath, []byte(data), 0644)
 	if err != nil {
 		return err
 	}
@@ -67,22 +71,21 @@ func (m *Memory) List() ([]CreatedIssue, error) {
 
 	file, err := m.ReadFromFile()
 	if err != nil {
-		return i, errors.New("error reading file")
+		return i, fmt.Errorf("error reading file: %w", err)
 	}
 
 	if len(file) == 0 {
-		return i, errors.New("no issues found in memory or file")
+		return i, fmt.Errorf("no issues found")
 	}
 
 	for _, v := range file {
-
 		issue := CreatedIssue{
 			ID:    v.ID,
 			Title: v.Title,
 		}
-
 		i = append(i, issue)
 	}
+
 	return i, nil
 }
 
@@ -137,16 +140,18 @@ func (m *Memory) FindIssueByID(Id string) (*CreatedIssue, error) {
 }
 
 func (m *Memory) ReadFromFile() ([]CreatedIssue, error) {
+	data, err := os.ReadFile(m.FilePath)
+	if err != nil {
+		return nil, err
+	}
+
 	i := []CreatedIssue{}
 
-	data, err := os.ReadFile("issue/issue.json")
+	err = json.Unmarshal(data, &i)
 	if err != nil {
-		return i, err
+		return nil, fmt.Errorf("error unmarshalling JSON: %w", err)
 	}
 
-	if err := json.Unmarshal(data, &i); err != nil {
-		return i, err
-	}
 	return i, nil
 }
 
