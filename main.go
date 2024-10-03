@@ -50,7 +50,7 @@ func main() {
 			return
 		}
 
-		if err = is.Save(issu); err != nil {
+		if err = is.Save(issu, "issue/issue.json"); err != nil {
 			fmt.Println("Error saving issue:", err)
 			return
 		}
