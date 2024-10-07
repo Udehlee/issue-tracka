@@ -1,19 +1,19 @@
-## issue-tracka
+# issue-tracka
 
 This is a simple command line project for tracking your issues.It is similar to github issues. It is written in Go.
 
-# How to run the program
+## How to run the program
 ```sh
 go run main.go -command=[options]
 ```
 
-# Options
+## Options
 - ```sh create ``` Create a new issue
 - ```sh list ``` list all issues present
 - ``` sh open ``` Open a issue using its Id
 - ```sh add-comment ``` add-comment adds comments to existing issue
 
-# Usage
+## Usage
 
 - Create a new issue
 ```sh
@@ -35,10 +35,10 @@ go run main.go -command=open "bb982b"
 go run main.go -command=open "bb982b"
 ```
 
-# Keep in mind
+## Keep in mind
 - when you run the ```sh go run main.go -command=create ``` , you will be asked to enter title and text of issue.
 
-# Testing
+## Testing
 - To run test
 
 ```sh
