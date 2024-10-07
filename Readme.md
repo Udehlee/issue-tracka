@@ -8,10 +8,10 @@ go run main.go -command=[options]
 ```
 
 ## Options
-- ```sh create ``` Create a new issue
-- ```sh list ``` list all issues present
-- ``` sh open ``` Open a issue using its Id
-- ```sh add-comment ``` add-comment adds comments to existing issue
+- ``` create ``` Create a new issue
+- ``` list ``` list all issues present
+- ```  open ``` Open a issue using its Id
+- ``` add-comment ``` add-comment adds comments to existing issue
 
 ## Usage
 
@@ -36,7 +36,7 @@ go run main.go -command=open "bb982b"
 ```
 
 ## Keep in mind
-- when you run the ```sh go run main.go -command=create ``` , you will be asked to enter title and text of issue.
+- when you run the ``` go run main.go -command=create ``` , you will be asked to enter title and text of issue.
 
 ## Testing
 - To run test
